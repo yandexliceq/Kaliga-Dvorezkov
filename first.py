@@ -19,7 +19,8 @@ class MainWindow(QMainWindow):
         painter.setRenderHint(QPainter.Antialiasing)
 
         for circle in self.circles:
-            painter.setBrush(Qt.yellow)
+            color = QColor(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+            painter.setBrush(color)
             painter.drawEllipse(circle['x'], circle['y'], circle['diameter'], circle['diameter'])
 
     def add_circle(self):
