@@ -14,26 +14,23 @@ class MainWindow(QMainWindow):
 
         self.circles = []
 
-def paintEvent(self, event):
-    painter = QPainter(self)
-    painter.setRenderHint(QPainter.Antialiasing)
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
 
-    for i, circle in enumerate(self.circles):
-        color = QColor(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        if i == len(self.circles) - 1:
-            painter.setBrush(color)
-        else:
-            painter.setBrush(Qt.NoBrush)
-        painter.drawEllipse(circle['x'], circle['y'], circle['diameter'], circle['diameter'])
+        for circle in self.circles:
+            painter.setBrush(circle['color'])
+            painter.drawEllipse(circle['x'], circle['y'], circle['diameter'], circle['diameter'])
 
 
     def add_circle(self):
         diameter = random.randint(10, 100)
         x = random.randint(0, self.width() - diameter)
         y = random.randint(0, self.height() - diameter)
-
-        self.circles.append({'x': x, 'y': y, 'diameter': diameter})
+        color = QColor(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        self.circles.append({'x': x, 'y': y, 'diameter': diameter, 'color': color})
         self.update()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
