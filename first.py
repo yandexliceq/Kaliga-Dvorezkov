@@ -1,40 +1,18 @@
-import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
-from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtCore import Qt
-import random
+import sqlite3
 
-class MainWindow(QMainWindow):
-    def __init__(self):
-        super().__init__()
+conn = sqlite3.connect('coffee.sqlite')
+cursor = conn.cursor()
 
-        self.button = QPushButton('Добавить окружность', self)
-        self.button.clicked.connect(self.add_circle)
-        self.button.setGeometry(10, 10, 150, 50)
+cursor.execute("SELECT * FROM coffee")
+rows = cursor.fetchall()
 
-        self.circles = []
+for row in rows:
+    print(f"ID: {row[0]}")
+    print(f"Название сорта: {row[1]}")
+    print(f"Степень обжарки: {row[2]}")
+    print(f"Молотый/в зернах: {row[3]}")
+    print(f"Описание вкуса: {row[4]}")
+    print(f"Цена: {row[5]}")
+    print(f"Объем упаковки: {row[6]}\n")
 
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.setRenderHint(QPainter.Antialiasing)
-
-        for circle in self.circles:
-            painter.setBrush(circle['color'])
-            painter.drawEllipse(circle['x'], circle['y'], circle['diameter'], circle['diameter'])
-
-
-    def add_circle(self):
-        diameter = random.randint(10, 100)
-        x = random.randint(0, self.width() - diameter)
-        y = random.randint(0, self.height() - diameter)
-        color = QColor(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        self.circles.append({'x': x, 'y': y, 'diameter': diameter, 'color': color})
-        self.update()
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    mainWindow = MainWindow()
-    mainWindow.setGeometry(100, 100, 500, 500)
-    mainWindow.show()
-    sys.exit(app.exec_())
+conn.close()
